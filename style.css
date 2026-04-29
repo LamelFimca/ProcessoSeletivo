@@ -72,6 +72,40 @@ body {
   transform: rotate(atan2(-28vh, 75vw));
 }
 
+/* ── Tapes: mobile portrait — calculado geometricamente por pontos de entrada/saída ── */
+@media (max-width: 768px) {
+  /* T1: centro em (50vw, 29vh) → ângulo um pouco maior */
+  .tape-t1 {
+    top: calc(29vh - 31px);
+    left: -75vw;
+    transform-origin: center center;
+    transform: rotate(atan2(22vh, 100vw));
+  }
+  /* T2: centro em (70vw, 16vh) → levemente mais à direita e acima */
+  .tape-t2 {
+    top: calc(16vh - 31px);
+    left: -55vw;
+    transform-origin: center center;
+    transform: rotate(atan2(37vh, 65vw));
+  }
+  /* B1: âncora direita em 108vh → esquerda visível em ~73vh (altura do botão inscrição) */
+  .tape-b1 {
+    top: calc(115vh - 31px);
+    left: auto;
+    right: -60px;
+    transform-origin: right center;
+    transform: rotate(atan2(16vh, 50vw));
+  }
+  /* B2: centro em (60vw, 86vh) → levemente mais para baixo */
+  .tape-b2 {
+    top: calc(86vh - 31px);
+    left: -65vw;
+    right: auto;
+    transform-origin: center center;
+    transform: rotate(atan2(-35vh, 80vw));
+  }
+}
+
 /* ── Page container ────────────────────────────────────────── */
 .container {
   min-height: 100vh;
