@@ -1,0 +1,511 @@
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Oswald:wght@700&display=swap');
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: #f0ebe0;
+  font-family: 'Special Elite', 'Courier New', monospace;
+  position: relative;
+}
+
+/* ── Warning tape ──────────────────────────────────────────── */
+/*
+ * T1: borda esquerda ~15vh → borda direita ~50vh (cruza logo levemente acima do centro)
+ * T2: âncora borda direita ~44vh → estende até borda superior ~30vw e além
+ * B1: borda esquerda 75vh → centro da borda inferior (50vw,100vh) ✓
+ * B2: centro em (25vw, 100vh) com transform-origin: center center
+ *     → mesmo ângulo da versão perfeita, estende para além da borda inferior
+ */
+.tape {
+  position: fixed;
+  width: 250vw;
+  height: 62px;
+  background: repeating-linear-gradient(
+    90deg,
+    #f2c12e 0px,  #f2c12e 26px,
+    #1a1a1a 26px, #1a1a1a 52px
+  );
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.92;
+}
+
+/* T1: inicia a 15vh na borda esquerda → cruza logo levemente acima do centro → ~50vh borda direita */
+.tape-t1 {
+  top: calc(15vh - 31px);
+  left: -60px;
+  transform-origin: left center;
+  transform: rotate(atan2(35vh, 100vw));
+}
+
+/* T2: centro em (65vw, 22vh) = ponto médio entre (30vw, 0) e (100vw, 44vh)
+ * Ângulo positivo atan2(44vh, 70vw) — sem ambiguidade de sinal no browser */
+.tape-t2 {
+  top: calc(22vh - 31px);
+  left: -60vw;
+  transform-origin: center center;
+  transform: rotate(atan2(44vh, 70vw));
+}
+
+/* B1: borda esquerda 75vh → centro da borda inferior ✓ */
+.tape-b1 {
+  top: calc(75vh - 31px);
+  left: -60px;
+  transform-origin: left center;
+  transform: rotate(atan2(25vh, 50vw));
+}
+
+/* B2: centro em (25vw, 100vh) — mesmo ângulo aprovado, estende além da borda inferior */
+.tape-b2 {
+  top: calc(100vh - 31px);
+  left: -100vw;
+  transform-origin: center center;
+  transform: rotate(atan2(-28vh, 75vw));
+}
+
+/* ── Page container ────────────────────────────────────────── */
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  position: relative;
+  z-index: 1;
+  gap: 18px;
+}
+
+/* ── Hero block (background atrás do "LAMEL" para cobrir as faixas) ── */
+.hero-block {
+  background: #f0ebe0;
+  padding: 0 8px;
+  line-height: 1;
+}
+
+/* ── Logo ──────────────────────────────────────────────────── */
+.logo {
+  width: 165px;
+  height: 165px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #1a1a1a;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+}
+
+/* ── Brand title ───────────────────────────────────────────── */
+.brand-title {
+  font-family: 'Oswald', 'Arial Black', Impact, sans-serif;
+  font-size: 3.8rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1;
+}
+
+/* ── Subtitle block ────────────────────────────────────────── */
+.subtitle-wrapper {
+  background-color: #1a1a1a;
+  padding: 10px 18px;
+  text-align: center;
+}
+
+.subtitle {
+  font-family: 'Special Elite', 'Courier New', monospace;
+  font-size: 1.75rem;
+  color: #f0ebe0;
+  letter-spacing: 3px;
+  line-height: 1.45;
+}
+
+/* ── Action area ───────────────────────────────────────────── */
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  margin-top: 44px;
+  width: 100%;
+  max-width: 380px;
+}
+
+/* ── Main buttons ──────────────────────────────────────────── */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 14px 40px;
+  background-color: #1a1a1a;
+  color: #f0ebe0;
+  font-family: 'Special Elite', 'Courier New', monospace;
+  font-size: 1.45rem;
+  letter-spacing: 5px;
+  text-decoration: none;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.18s;
+}
+
+.btn:hover  { background-color: #333; }
+.btn:focus  { outline: 3px solid #f2c12e; outline-offset: 2px; }
+
+/* ── Edital accordion panel ────────────────────────────────── */
+.edital-toggle {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+
+.edital-panel {
+  max-height: 0;
+  overflow: hidden;
+  width: 100%;
+  background: #1a1a1a;
+  color: #f0ebe0;
+  border-top: 0 solid #f2c12e;
+  transition: max-height 0.4s ease, border-top-width 0.4s ease;
+}
+
+.edital-toggle:checked ~ .edital-panel {
+  max-height: 350px;
+  border-top-width: 3px;
+}
+
+.edital-content {
+  padding: 22px 24px;
+}
+
+.edital-content h3 {
+  font-family: 'Special Elite', monospace;
+  font-size: 1rem;
+  letter-spacing: 3px;
+  color: #f2c12e;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.edital-dates {
+  list-style: none;
+  margin-bottom: 20px;
+}
+
+.edital-dates li {
+  padding: 7px 0;
+  border-bottom: 1px solid #333;
+  font-size: 0.92rem;
+  letter-spacing: 1px;
+}
+
+.edital-dates li:last-child { border-bottom: none; }
+
+.edital-dates strong { color: #f2c12e; }
+
+.pdf-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 10px 0;
+  width: 100%;
+  background: #f2c12e;
+  color: #1a1a1a;
+  text-decoration: none;
+  font-family: 'Special Elite', monospace;
+  font-size: 0.88rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: background 0.18s;
+}
+
+.pdf-link::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 15px;
+  flex-shrink: 0;
+  background-color: #1a1a1a;
+  clip-path: polygon(0% 0%, 62% 0%, 100% 28%, 100% 100%, 0% 100%);
+}
+
+.pdf-link:hover { background: #d4a820; }
+
+/* ── Form page ─────────────────────────────────────────────── */
+.form-wrapper {
+  width: 100%;
+  max-width: 480px;
+  background: #1a1a1a;
+  color: #f0ebe0;
+  padding: 36px 32px;
+  margin-top: 10px;
+}
+
+.form-title {
+  font-family: 'Special Elite', monospace;
+  font-size: 1.1rem;
+  letter-spacing: 4px;
+  color: #f2c12e;
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  border-bottom: 2px solid #f2c12e;
+  padding-bottom: 12px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.82rem;
+  letter-spacing: 3px;
+  color: #f2c12e;
+  text-transform: uppercase;
+}
+
+.form-group input,
+.form-group select {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-bottom: 2px solid #f2c12e;
+  color: #f0ebe0;
+  font-family: 'Special Elite', 'Courier New', monospace;
+  font-size: 1rem;
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color 0.18s, background 0.18s;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  background: #333;
+  border-bottom-color: #fff;
+}
+
+.form-group select option { background: #2a2a2a; }
+
+/* File input custom styling */
+.file-wrapper {
+  display: flex;
+  align-items: stretch;
+}
+
+.file-wrapper .file-label {
+  flex: 1;
+  border-right: none;
+}
+
+.file-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-left: none;
+  border-bottom: 2px solid #f2c12e;
+  color: #f0ebe0;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+
+.file-clear:hover { background: #3a2020; color: #ff6b6b; }
+
+.file-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  border-bottom: 2px solid #f2c12e;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.file-label:hover { background: #333; }
+
+.file-label input[type="file"] { display: none; }
+
+.file-label .file-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.file-label .file-text {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  color: #aaa;
+  word-break: break-all;
+}
+
+.file-label .file-text.selected { color: #f0ebe0; }
+
+.file-hint {
+  font-size: 0.72rem;
+  color: #888;
+  letter-spacing: 1px;
+}
+
+/* Consent notice */
+.consent {
+  font-size: 0.72rem;
+  color: #888;
+  letter-spacing: 1px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  border-top: 1px solid #333;
+  padding-top: 14px;
+}
+
+/* Submit button */
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  background: #f2c12e;
+  color: #1a1a1a;
+  font-family: 'Special Elite', monospace;
+  font-size: 1.1rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.btn-submit:hover:not(:disabled) { background: #d4a820; }
+
+.btn-submit:disabled {
+  background: #555;
+  color: #888;
+  cursor: not-allowed;
+}
+
+/* Message alert */
+.alert {
+  display: none;
+  padding: 14px 16px;
+  font-family: 'Special Elite', monospace;
+  font-size: 0.88rem;
+  letter-spacing: 1px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.alert.success { background: #1a4a1a; color: #6eff6e; border-left: 4px solid #6eff6e; }
+.alert.error   { background: #4a1a1a; color: #ff6e6e; border-left: 4px solid #ff6e6e; }
+.alert.show    { display: block; }
+
+/* Success screen */
+[hidden] { display: none !important; }
+
+.success-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px;
+  text-align: center;
+  gap: 14px;
+}
+
+.success-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #f2c12e;
+  color: #1a1a1a;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.success-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 4px;
+  color: #f2c12e;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.success-msg {
+  font-family: 'Special Elite', monospace;
+  font-size: 0.88rem;
+  color: #ccc;
+  letter-spacing: 1px;
+  line-height: 1.6;
+  max-width: 320px;
+}
+
+.btn-instagram {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Special Elite', monospace;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: opacity 0.18s;
+}
+
+.btn-instagram:hover { opacity: 0.85; }
+
+.ig-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Back link */
+.back-link {
+  display: inline-block;
+  margin-top: 18px;
+  color: #888;
+  font-family: 'Special Elite', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.18s;
+}
+
+.back-link:hover { color: #f0ebe0; }
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .brand-title { font-size: 2.8rem; letter-spacing: 4px; }
+  .subtitle    { font-size: 1.35rem; }
+  .btn         { font-size: 1.2rem; letter-spacing: 3px; }
+  .tape        { width: 300px; height: 44px; }
+  .form-wrapper { padding: 28px 20px; }
+}
