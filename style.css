@@ -106,7 +106,43 @@ body {
   }
 }
 
-/* ── Page container ────────────────────────────────────────── */
+/* ── Tapes: max-width 480px (Galaxy S25 ~360px) ── */
+@media (max-width: 480px) {
+  .tape-t1 {
+    top: calc(35vh - 31px);
+    left: -120vw;
+    right: auto;
+    width: 400vw;
+    transform-origin: center center;
+    transform: rotate(atan2(22vh, 100vw));
+  }
+  .tape-t2 {
+    top: calc(22vh - 31px);
+    left: -120vw;
+    right: auto;
+    width: 400vw;
+    transform-origin: center center;
+    transform: rotate(atan2(30vh, 65vw));
+  }
+  .tape-b1 {
+    top: calc(110vh - 31px);
+    left: calc(-150vw + 60px);
+    right: auto;
+    width: 250vw;
+    transform-origin: right center;
+    transform: rotate(atan2(13vh, 50vw));
+  }
+  .tape-b2 {
+    top: calc(86vh - 31px);
+    left: -130vw;
+    right: auto;
+    width: 400vw;
+    transform-origin: center center;
+    transform: rotate(atan2(-35vh, 80vw));
+  }
+}
+
+
 .container {
   min-height: 100vh;
   display: flex;
@@ -540,6 +576,5 @@ body {
   .brand-title { font-size: 2.8rem; letter-spacing: 4px; }
   .subtitle    { font-size: 1.35rem; }
   .btn         { font-size: 1.2rem; letter-spacing: 3px; }
-  .tape        { width: 300px; height: 44px; }
   .form-wrapper { padding: 28px 20px; }
 }
