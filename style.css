@@ -240,6 +240,10 @@ body {
   height: 0;
 }
 
+.edital-wrapper {
+  width: 100%;
+}
+
 .edital-panel {
   max-height: 0;
   overflow: hidden;
@@ -250,7 +254,7 @@ body {
   transition: max-height 0.4s ease, border-top-width 0.4s ease;
 }
 
-.edital-toggle:checked ~ .edital-panel {
+.edital-toggle:checked ~ .edital-wrapper .edital-panel {
   max-height: 350px;
   border-top-width: 3px;
 }
@@ -274,6 +278,8 @@ body {
 }
 
 .edital-dates li {
+  display: flex;
+  justify-content: space-between;
   padding: 7px 0;
   border-bottom: 1px solid #333;
   font-size: 0.92rem;
@@ -313,6 +319,19 @@ body {
 }
 
 .pdf-link:hover { background: #d4a820; }
+
+.btn-material {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.btn-material svg {
+  flex-shrink: 0;
+  opacity: 0.9;
+}
 
 /* ── Form page ─────────────────────────────────────────────── */
 .form-wrapper {
